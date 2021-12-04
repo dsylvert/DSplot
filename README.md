@@ -27,7 +27,7 @@ of the scatter plot created. It can change titles, points (shape, size, and colo
 you can add titles(main title and subtitle), and add lines (connecting points or line 
 of best fit). This is an attempt to replicate features in the ggplot2 package.
 
-##Usage
+## Usage
 
 `scatterplot.basic()` must be used in order to access the editting features of 
 DSplot. Once the function is called, `customize()` can be used to change characteristics
