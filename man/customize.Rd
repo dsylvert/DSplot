@@ -55,30 +55,29 @@ customize() allows users to change the features of a current plot without rebuil
 # of the customize() function
 scatterplot.basic(dat = mtcars, xname = "mpg", yname = "wt")
 
-#####the customize() function now can be used to add/
+#####the customize() function now can be used to add
 #change plot features
-# *can change the point type to triangles if desired
-# (value of 2 in R Base)
-# customize(pt.type = 2)
+# can change the point type to triangles if desired (value of 2 in R Base)
+customize(pt.type = 2)
 
-# *can change the color and size of the points
+#can change the color and size of the points
 # (note that background color for input 21-25 is "red" by default)
 customize(pt.type = 2, pt.col = "red", pt.size = 1)
 
-# *can include a line and titles
+#can include a line and titles
 customize(pt.type = 2, pt.col = "red", pt.size = 1,
-line.choice = T, line.type = 1, title.choice = T,
+line.choice = TRUE, line.type = 1, title.choice = TRUE,
 new.title = "Testing out the customize function",
 new.subtitle = "It looks like it's working.",
 line.method = "linear")
 
-# *can change each input
+#can change each input
 customize(pt.type = 2, pt.col = "red", pt.size = 1,
-line.choice = T, line.type = 1, title.choice = T,
+line.choice = TRUE, line.type = 1, title.choice = TRUE,
 new.title = "Testing out the customize function",
 new.subtitle = "It looks like it's working.",
 line.method = "linear", line.col = "blue",
-change.lab = T, x.newlab = "x-axis",
+change.lab = TRUE, x.newlab = "x-axis",
 y.newlab = "y-axis")
 
 }
