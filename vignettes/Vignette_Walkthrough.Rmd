@@ -61,10 +61,10 @@ Note that for the demonstrations below, the plots using *DSplot* have the line c
 ```{r}
 #####DSplot
 scatterplot.basic(mtcars, "mpg", "wt")
-customize(pt.type = 16, line.choice = T, line.type = 1, line.col = "blue", line.method = "default") 
+customize(pt.type = 16, line.choice = TRUE, line.type = 1, line.col = "blue", line.method = "default") 
 
 scatterplot.basic(mtcars, "mpg", "wt")
-customize(pt.type = 16, line.choice = T, line.type = 1, line.col = "red", line.method = "linear") 
+customize(pt.type = 16, line.choice = TRUE, line.type = 1, line.col = "red", line.method = "linear") 
 
 #####ggplot2
 ggplot(mtcars, aes(x = mpg, y = wt)) + 
@@ -73,14 +73,14 @@ ggplot(mtcars, aes(x = mpg, y = wt)) +
 
 ggplot(mtcars, aes(x = mpg, y = wt)) + 
   geom_point() +
-  geom_smooth(method = "lm", se = F, color = "magenta")
+  geom_smooth(method = "lm", se = FALSE, color = "magenta")
 ```
 
 **2c.** Another feature of *customize()* in the *DSplot package* is the insertion of titles. Again, we will compare this with functions *ggplot2* has to offer. The difference in space between titles and the plot itself are somewhat noticeable, but the title and subtitles are placed in the same location, and the titles of the axes are successfully replaced with the new titles. 
 ```{r}
 #####DSplot
 scatterplot.basic(mtcars, "mpg", "wt") #plot before the change
-customize(pt.type = 16, change.lab = T, x.newlab = "DSplot x-axis", y.newlab = "DSplot y-axis", title.choice = T, new.title = "DSplot's graph", new.subtitle = "This is quite similar to ggplot2's graph") #plot after the change
+customize(pt.type = 16, change.lab = TRUE, x.newlab = "DSplot x-axis", y.newlab = "DSplot y-axis", title.choice = TRUE, new.title = "DSplot's graph", new.subtitle = "This is quite similar to ggplot2's graph") #plot after the change
 
 #####ggplot2
 ggplot(mtcars, aes(x = mpg, y = wt)) + 
@@ -106,13 +106,13 @@ ggplot(mtcars, aes(x = mpg, y = wt)) +
              size = 1.5))
 
 x3 <- microbenchmark(separate = {scatterplot.basic(mtcars, "mpg", "wt");
-customize(pt.type = 16, line.choice = T, line.type = 1, line.col = "blue", line.method = "default")}, 
+customize(pt.type = 16, line.choice = TRUE, line.type = 1, line.col = "blue", line.method = "default")}, 
 ggplot(mtcars, aes(x = mpg, y = wt)) + 
   geom_point() +
   geom_line(color = "green"))
 
 x4 <- microbenchmark(separate = {scatterplot.basic(mtcars, "mpg", "wt"); 
-customize(pt.type = 16, change.lab = T, x.newlab = "DSplot x-axis", y.newlab = "DSplot y-axis", title.choice = T, new.title = "DSplot's graph", new.subtitle = "This is quite similar to ggplot2's graph")},
+customize(pt.type = 16, change.lab = TRUE, x.newlab = "DSplot x-axis", y.newlab = "DSplot y-axis", title.choice = TRUE, new.title = "DSplot's graph", new.subtitle = "This is quite similar to ggplot2's graph")},
 ggplot(mtcars, aes(x = mpg, y = wt)) + 
   geom_point() +
   labs(x = "ggplot2 x-axis", y = "ggplot2 y-axis", title = "ggplot's graph", subtitle = "Is this close to DSplot's graph?"))
