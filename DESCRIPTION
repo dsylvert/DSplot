@@ -1,0 +1,10 @@
+Package: DSplot
+Type: Package
+Title: Plotting
+Version: 0.1.0
+Author: Dhajanae Sylvertooth
+Maintainer: The package maintainer <yourself@somewhere.net>
+Description: Hw 4: Biostat 625 assignment focused in data visualization using the Graphics R package to replicate some of the functionality in the ggplot2 package.
+License: GPL-3
+Encoding: UTF-8
+LazyData: true

@@ -1,0 +1,126 @@
+---
+title: "Vignette_Walkthrough"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette_Walkthrough}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+**Loading needed libraries**
+```{r setup}
+library(graphics)
+library(stats)
+library(DSplot)
+library(datasets)
+library(ggplot2)
+library(microbenchmark)
+```
+
+##Introduction
+
+The *DSplot* package that will be submitted for HW4 for the course BIOSTAT 625 replicates some of the functionality of the *ggplot2* package in R. The *DSplot* package only reproduces functions in *ggplot* pertaining to scatter plots. Outputting the scatter plot and editing many features of the scatter plot are the main usages of of the *DSplot*. Additionally, plots do not have to be recreated to change its features. This vignette will demonstrate the closeness in similarity between some of the basic features in *ggplot2* when creating scatter plots to visualize data. Note that the word "basic" is used to refer to no change in a plot's features (all default settings based on the *ggplot2* package).
+
+We will be using the mtcars data set from the R Datasets Package for demonstrations.
+
+## Usage of DSplot package
+There are two functions within this package. 
+**1.** The *scatterplot.basic(<parameter inputs here>)* function makes a basic scatter plot similar to the use of *ggplot(<parameter inputs here>) + geom_point()*. All of the plot's settings are set to default inputs. Here, we compare the basic scatter plots using *DSplot* and *ggplot2*. Notice for both, the inputs require a data set. 
+```{r}
+names(mtcars) #notice the variables stored in the mtcars dataset
+
+#####DSplot
+scatterplot.basic(mtcars, "mpg", "wt") 
+
+#####ggplot2
+ggplot(mtcars, aes(x = mpg, y = wt)) + geom_point()
+```
+
+**2a.** The *customize(<parameter inputs here>)* function is a basic scatter plot editting tool. Similar to *geom_point()*, *customize()* can take the exist plot an change the shape, size, and color of the points. However, similar to *geom_point()*, *scatterplot.basic()* is required to be used to make use of the *customize()* function. Otherwise, there will be an error. One huge difference between *customize()* and *geom_point* is that *customize()* uses hidden variables previously generated from calling *scatterplot.basic()*. *ggplot2* does not seem to use such method. Below will demonstrate the basic usage of *customize()* comparing the generated graph with a graph using *ggplot2*. While the sizing is set up differently for the points, the plots complete the same task.
+```{r}
+#####DSplot
+scatterplot.basic(mtcars, "mpg", "wt") #plot before the change
+customize(pt.type = 16, pt.col = "purple", pt.size = 1) #plot after the change
+
+#####ggplot2
+ggplot(mtcars, aes(x = mpg, y = wt)) + 
+  geom_point(color = "purple",
+             size = 1.5) 
+```
+
+**2b.** Similar to some of *ggplot2*'s features, *customize()* can also connect the points (multiple segments) or create a line of best fit as well as change the color of said lines as well as change the line type (dashed, solid, etc, based on R). Of course, DSplot does not include all possible line methods (linear, connecting points, etc.), but it does include two. Below, we will insert (using both packages) a line of best fit, change it's color, and change it's type. 
+
+Note that for the demonstrations below, the plots using *DSplot* have the line colors blue and red, while the plots using *ggplot2* are in colors green and magenta.
+```{r}
+#####DSplot
+scatterplot.basic(mtcars, "mpg", "wt")
+customize(pt.type = 16, line.choice = T, line.type = 1, line.col = "blue", line.method = "default") 
+
+scatterplot.basic(mtcars, "mpg", "wt")
+customize(pt.type = 16, line.choice = T, line.type = 1, line.col = "red", line.method = "linear") 
+
+#####ggplot2
+ggplot(mtcars, aes(x = mpg, y = wt)) + 
+  geom_point() +
+  geom_line(color = "green")
+
+ggplot(mtcars, aes(x = mpg, y = wt)) + 
+  geom_point() +
+  geom_smooth(method = "lm", se = F, color = "magenta")
+```
+
+**2c.** Another feature of *customize()* in the *DSplot package* is the insertion of titles. Again, we will compare this with functions *ggplot2* has to offer. The difference in space between titles and the plot itself are somewhat noticeable, but the title and subtitles are placed in the same location, and the titles of the axes are successfully replaced with the new titles. 
+```{r}
+#####DSplot
+scatterplot.basic(mtcars, "mpg", "wt") #plot before the change
+customize(pt.type = 16, change.lab = T, x.newlab = "DSplot x-axis", y.newlab = "DSplot y-axis", title.choice = T, new.title = "DSplot's graph", new.subtitle = "This is quite similar to ggplot2's graph") #plot after the change
+
+#####ggplot2
+ggplot(mtcars, aes(x = mpg, y = wt)) + 
+  geom_point() +
+  labs(x = "ggplot2 x-axis", y = "ggplot2 y-axis", title = "ggplot's graph", subtitle = "Is this close to DSplot's graph?")
+```
+
+## Benchmarking: Comparing efficiency
+
+Efficiency is essential in R. The utilization of packages not only depend on the functions included, but they also depend on the efficiency of the functions in the package. With many packages available, it is important to know which are more efficient. Here, we will compare the efficiency of the coding above in the deomnstrations. 
+```{r}
+#####comparing efficiency of creating basic scatter plots
+x1 <- microbenchmark(
+  scatterplot.basic(mtcars, "mpg", "wt"),
+  ggplot(mtcars, aes(x = mpg, y = wt)) + geom_point()
+)
+
+#####comparing efficiency when editting features of basic scatter plots
+x2 <- microbenchmark(separate = {scatterplot.basic(mtcars, "mpg", "wt"); 
+customize(pt.type = 16, pt.col = "purple", pt.size = 1)},
+ggplot(mtcars, aes(x = mpg, y = wt)) + 
+  geom_point(color = "purple",
+             size = 1.5))
+
+x3 <- microbenchmark(separate = {scatterplot.basic(mtcars, "mpg", "wt");
+customize(pt.type = 16, line.choice = T, line.type = 1, line.col = "blue", line.method = "default")}, 
+ggplot(mtcars, aes(x = mpg, y = wt)) + 
+  geom_point() +
+  geom_line(color = "green"))
+
+x4 <- microbenchmark(separate = {scatterplot.basic(mtcars, "mpg", "wt"); 
+customize(pt.type = 16, change.lab = T, x.newlab = "DSplot x-axis", y.newlab = "DSplot y-axis", title.choice = T, new.title = "DSplot's graph", new.subtitle = "This is quite similar to ggplot2's graph")},
+ggplot(mtcars, aes(x = mpg, y = wt)) + 
+  geom_point() +
+  labs(x = "ggplot2 x-axis", y = "ggplot2 y-axis", title = "ggplot's graph", subtitle = "Is this close to DSplot's graph?"))
+
+x1
+x2
+x3
+x4
+```
+
+Overall, the "DSplot* package is much slower than the functions used in the *ggplot2* package, as expected. While the *DSplot* proposed package for HW4 is not a complete representation of what *ggplot2* offers, it does some of the same tasks using only Base R packages. Improvements in regards to text font and spacing between objects in the plots could be considered in the future. It was quite fun finding out how much one can do without the use of the *ggplot2* package. 
