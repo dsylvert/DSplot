@@ -20,7 +20,7 @@ devtools::install_github("dsylvert/DSplot")
 ```
 
 
-##Overview
+## Overview
 
 The intention of this package is to create basic scatter plots and edit the features 
 of the scatter plot created. It can change titles, points (shape, size, and color), 
